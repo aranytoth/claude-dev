@@ -1,119 +1,55 @@
 /* Public Frontend Styles */
-
 body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-  flex: 1;
+    flex: 1;
 }
 
 footer {
-  margin-top: auto;
+    margin-top: auto;
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 article h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+    font-size: 2.5rem;
 }
 
 article h2 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 
 article h2 a {
-  color: #212529;
+    color: #212529;
+    text-decoration: none;
 }
 
 article h2 a:hover {
-  color: #0d6efd;
+    color: #0d6efd;
 }
 
-/* Content styling */
 .content {
-  line-height: 1.8;
-  font-size: 1.1rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
 }
 
 .content img {
-  max-width: 100%;
-  height: auto;
-  margin: 1.5rem 0;
+    max-width: 100%;
+    height: auto;
 }
 
-.content p {
-  margin-bottom: 1.5rem;
-}
-
-.content h1, .content h2, .content h3,
-.content h4, .content h5, .content h6 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-.content ul, .content ol {
-  margin-bottom: 1.5rem;
-  padding-left: 2rem;
-}
-
-.content blockquote {
-  border-left: 4px solid #0d6efd;
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: #6c757d;
-}
-
-.content pre {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  overflow-x: auto;
-}
-
-.content code {
-  background-color: #f8f9fa;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.9em;
-}
-
-/* Navbar */
 .navbar-brand {
-  font-weight: bold;
-  font-size: 1.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
-/* Cards */
 .card {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  border: 1px solid #dee2e6;
-}
-
-.card-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
-  font-weight: 600;
-}
-
-/* Article list */
-article {
-  margin-bottom: 2rem;
-}
-
-article .text-muted {
-  font-size: 0.9rem;
-}
-
-/* Footer */
-footer {
-  border-top: 1px solid #dee2e6;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }

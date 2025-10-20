@@ -1,82 +1,113 @@
-# WordPress-like CMS Application
+# WordPress-like CMS - Laravel Application
 
-A full-featured Content Management System built with Node.js, Express, and Bootstrap 5. Features a comprehensive admin panel and a clean public frontend.
+A full-featured Content Management System built with Laravel 10 and PHP. Features a comprehensive admin panel with Bootstrap 5 and a clean public frontend - similar to WordPress but built from scratch with Laravel.
 
 ## Features
 
-- **Admin Panel** (Bootstrap 5)
-  - User management with role-based access control
-  - Posts management with categories and tags
-  - Pages management
-  - Categories and tags management
-  - TinyMCE rich text editor integration
-  - Responsive dashboard with statistics
+### Admin Panel (Bootstrap 5)
+- **Dashboard** with statistics and recent posts
+- **Posts Management** - Create, edit, delete posts with categories and tags
+- **Pages Management** - Create, edit, delete static pages
+- **Categories Management** - Organize posts by categories
+- **Tags Management** - Tag system for posts
+- **User Management** - Admin-only user CRUD with roles (Admin/User)
+- **TinyMCE Editor** - Rich text editor integration for posts and pages
+- **Authentication** - Secure login with session management
 
-- **Public Frontend**
-  - Clean, responsive design
-  - Blog post listing
-  - Single post and page views
-  - Category and tag archives
-  - SEO-friendly URLs (slugs)
-
-- **Authentication**
-  - Secure login system
-  - Password hashing with bcrypt
-  - Session management
-  - Role-based access (Admin/User)
+### Public Frontend
+- Responsive design with Bootstrap 5
+- Homepage with latest posts (paginated)
+- Single post and page views
+- Category and tag archive pages
+- Clean, modern UI
+- SEO-friendly URLs (automatic slugs)
 
 ## Tech Stack
 
-- **Backend:** Node.js, Express.js
-- **Database:** SQLite (better-sqlite3)
-- **Template Engine:** EJS
+- **Framework:** Laravel 10
+- **Language:** PHP 8.1+
+- **Database:** SQLite (MySQL/PostgreSQL compatible)
+- **Template Engine:** Blade
 - **Frontend:** Bootstrap 5, Bootstrap Icons
 - **Rich Text Editor:** TinyMCE
-- **Security:** bcryptjs, express-session
+- **Authentication:** Laravel's built-in Auth
 
 ## Installation
 
-1. Clone the repository
-2. Install dependencies:
+### Prerequisites
+- PHP 8.1 or higher
+- Composer
+- SQLite (or MySQL/PostgreSQL)
+
+### Setup Instructions
+
+1. **Clone the repository**
    ```bash
-   npm install
+   git clone <repository-url>
+   cd <project-directory>
    ```
 
-3. Create a `.env` file from `.env.example`:
+2. **Install Composer dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Create environment file**
    ```bash
    cp .env.example .env
    ```
 
-4. Edit `.env` file and add your TinyMCE API key:
-   ```
-   TINYMCE_API_KEY=your-api-key-here
-   ```
-   Get a free TinyMCE API key from: https://www.tiny.cloud/
-
-5. Initialize the database:
+4. **Generate application key**
    ```bash
-   npm run init-db
+   php artisan key:generate
    ```
 
-## Usage
+5. **Configure database**
 
-### Development
+   For SQLite (default):
+   ```bash
+   touch database/database.sqlite
+   ```
 
-```bash
-npm run dev
-```
+   Or edit `.env` for MySQL/PostgreSQL:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=your_database
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
 
-### Production
+6. **Add TinyMCE API Key**
 
-```bash
-npm start
-```
+   Get a free API key from https://www.tiny.cloud/ and add to `.env`:
+   ```
+   TINYMCE_API_KEY=your-tinymce-api-key-here
+   ```
 
-The application will be available at `http://localhost:3000`
+7. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
 
-## Default Admin Credentials
+8. **Seed the database**
+   ```bash
+   php artisan db:seed
+   ```
 
-After running `npm run init-db`, you can log in with:
+9. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
+
+10. **Access the application**
+    - Public Site: http://localhost:8000
+    - Admin Panel: http://localhost:8000/login
+
+## Default Credentials
+
+After seeding the database:
 
 - **Email:** admin@example.com
 - **Password:** admin123
@@ -86,61 +117,131 @@ After running `npm run init-db`, you can log in with:
 ## Project Structure
 
 ```
-.
-├── database/           # SQLite database
-├── models/            # Database models
-├── routes/            # Express routes (admin & public)
-├── views/             # EJS templates
-│   ├── admin/        # Admin panel views
-│   ├── public/       # Public frontend views
-│   └── partials/     # Reusable partials
-├── middleware/        # Custom middleware
-├── public/           # Static files (CSS, JS, uploads)
-├── scripts/          # Utility scripts
-└── server.js         # Main application file
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/          # Admin panel controllers
+│   │   │   ├── Auth/           # Authentication controllers
+│   │   │   └── HomeController.php  # Public frontend controller
+│   │   └── Middleware/
+│   └── Models/                 # Eloquent models
+├── database/
+│   ├── migrations/             # Database migrations
+│   └── seeders/               # Database seeders
+├── public/
+│   └── css/                   # Custom CSS files
+├── resources/
+│   └── views/
+│       ├── admin/             # Admin panel views
+│       ├── public/            # Public frontend views
+│       └── layouts/           # Blade layouts
+└── routes/
+    └── web.php                # Route definitions
 ```
 
-## API Endpoints
+## Usage
 
-### Admin Routes (requires authentication)
+### Admin Panel Routes
 
-- `GET /admin/dashboard` - Admin dashboard
-- `GET /admin/posts` - List all posts
-- `GET /admin/posts/new` - Create new post
-- `GET /admin/posts/:id/edit` - Edit post
-- `GET /admin/pages` - List all pages
-- `GET /admin/categories` - List all categories
-- `GET /admin/tags` - List all tags
-- `GET /admin/users` - List all users (admin only)
+All admin routes are protected by authentication middleware:
+
+- `/admin/dashboard` - Dashboard
+- `/admin/posts` - Posts management
+- `/admin/pages` - Pages management
+- `/admin/categories` - Categories management
+- `/admin/tags` - Tags management
+- `/admin/users` - User management (admin only)
 
 ### Public Routes
 
-- `GET /` - Homepage (latest posts)
-- `GET /post/:slug` - Single post
-- `GET /page/:slug` - Single page
-- `GET /category/:slug` - Category archive
-- `GET /tag/:slug` - Tag archive
+- `/` - Homepage (latest posts)
+- `/post/{slug}` - Single post view
+- `/page/{slug}` - Single page view
+- `/category/{slug}` - Category archive
+- `/tag/{slug}` - Tag archive
 
 ## Database Schema
 
 ### Users
-- id, username, email, password (hashed), role, created_at, updated_at
+- id, name, email, password, role, remember_token, timestamps
 
 ### Posts
-- id, title, slug, content, excerpt, featured_image, status, author_id, category_id, created_at, updated_at, published_at
+- id, title, slug, content, excerpt, featured_image, status, user_id, category_id, published_at, timestamps
 
 ### Pages
-- id, title, slug, content, status, author_id, template, created_at, updated_at, published_at
+- id, title, slug, content, status, user_id, template, published_at, timestamps
 
 ### Categories
-- id, name, slug, description, created_at, updated_at
+- id, name, slug, description, timestamps
 
 ### Tags
-- id, name, slug, created_at, updated_at
+- id, name, slug, timestamps
 
-### Post_Tags (junction table)
-- post_id, tag_id
+### Post_Tag (Pivot)
+- id, post_id, tag_id, timestamps
+
+## Customization
+
+### Adding New Templates
+
+Edit `resources/views/admin/pages/create.blade.php` and `edit.blade.php` to add new page templates to the dropdown.
+
+### Styling
+
+- Admin styles: `public/css/admin.css`
+- Public styles: `public/css/public.css`
+
+### TinyMCE Configuration
+
+Edit the TinyMCE init configuration in:
+- `resources/views/admin/posts/create.blade.php`
+- `resources/views/admin/posts/edit.blade.php`
+- `resources/views/admin/pages/create.blade.php`
+- `resources/views/admin/pages/edit.blade.php`
+
+## Artisan Commands
+
+```bash
+# Run migrations
+php artisan migrate
+
+# Seed database
+php artisan db:seed
+
+# Clear cache
+php artisan cache:clear
+
+# Clear config cache
+php artisan config:clear
+
+# Create new migration
+php artisan make:migration create_table_name
+
+# Create new controller
+php artisan make:controller ControllerName
+
+# Create new model
+php artisan make:model ModelName
+```
+
+## Security
+
+- Passwords are hashed using bcrypt
+- CSRF protection on all forms
+- Authentication middleware on admin routes
+- Role-based access control (admin/user)
+- SQL injection protection via Eloquent ORM
 
 ## License
 
-MIT
+MIT License
+
+## Support
+
+For issues and questions, please refer to Laravel documentation:
+- https://laravel.com/docs
+- https://www.tiny.cloud/docs/ (TinyMCE)
+
+---
+
+Built with Laravel and PHP by Claude Code

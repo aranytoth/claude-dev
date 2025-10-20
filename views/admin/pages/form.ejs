@@ -1,0 +1,85 @@
+<%- include('../../partials/admin-header') %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <h2><%= page ? 'Edit Page' : 'New Page' %></h2>
+
+    <form method="POST" action="<%= page ? '/admin/pages/' + page.id + '?_method=PUT' : '/admin/pages' %>">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title"
+                       value="<%= page ? page.title : '' %>" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="15"><%= page ? page.content : '' %></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>Publish</strong>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                  <option value="draft" <%= page && page.status === 'draft' ? 'selected' : '' %>>Draft</option>
+                  <option value="published" <%= page && page.status === 'published' ? 'selected' : '' %>>Published</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="template" class="form-label">Template</label>
+                <select class="form-select" id="template" name="template">
+                  <option value="default" <%= page && page.template === 'default' ? 'selected' : '' %>>Default</option>
+                  <option value="full-width" <%= page && page.template === 'full-width' ? 'selected' : '' %>>Full Width</option>
+                </select>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">
+                  <%= page ? 'Update' : 'Publish' %>
+                </button>
+                <a href="/admin/pages" class="btn btn-secondary">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% if (tinymceApiKey) { %>
+<script src="https://cdn.tiny.cloud/1/<%= tinymceApiKey %>/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#content',
+    height: 500,
+    menubar: true,
+    plugins: [
+      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+      'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+    ],
+    toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+  });
+</script>
+<% } else { %>
+<script>
+  console.warn('TinyMCE API key not configured. Please add TINYMCE_API_KEY to your .env file');
+  alert('Note: TinyMCE editor is not configured. Please add your API key to .env file for rich text editing.');
+</script>
+<% } %>
+
+<%- include('../../partials/admin-footer') %>

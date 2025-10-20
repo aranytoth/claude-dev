@@ -1,0 +1,63 @@
+<%- include('../../partials/admin-header') %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>All Pages</h2>
+      <a href="/admin/pages/new" class="btn btn-primary"><i class="bi bi-plus-circle"></i> New Page</a>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <% if (pages.length > 0) { %>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pages.forEach(page => { %>
+            <tr>
+              <td><strong><%= page.title %></strong></td>
+              <td><%= page.author_name %></td>
+              <td>
+                <% if (page.status === 'published') { %>
+                <span class="badge bg-success">Published</span>
+                <% } else { %>
+                <span class="badge bg-secondary">Draft</span>
+                <% } %>
+              </td>
+              <td><%= new Date(page.created_at).toLocaleDateString() %></td>
+              <td>
+                <a href="/admin/pages/<%= page.id %>/edit" class="btn btn-sm btn-primary">
+                  <i class="bi bi-pencil"></i> Edit
+                </a>
+                <form method="POST" action="/admin/pages/<%= page.id %>?_method=DELETE" style="display: inline;">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </form>
+                <% if (page.status === 'published') { %>
+                <a href="/page/<%= page.slug %>" target="_blank" class="btn btn-sm btn-info">
+                  <i class="bi bi-eye"></i> View
+                </a>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <p class="text-muted">No pages found. <a href="/admin/pages/new">Create your first page</a></p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin-footer') %>
